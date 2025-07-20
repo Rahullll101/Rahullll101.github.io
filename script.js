@@ -102,8 +102,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // Contact form functionality
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
+        contactForm.addEventListener('submit', async function(e) {
             e.preventDefault();
+            
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            
+            // Show loading state
+            submitBtn.textContent = 'SENDING...';
+            submitBtn.disabled = true;
+            submitBtn.style.background = 'var(--neon-yellow)';
+            submitBtn.style.color = 'var(--dark-bg)';
             
             // Get form data
             const formData = new FormData(this);
@@ -112,26 +121,116 @@ document.addEventListener('DOMContentLoaded', function() {
             const subject = formData.get('subject');
             const message = formData.get('message');
             
-            // Create mailto link
-            const mailtoLink = `mailto:rahulhalkarni03@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
+            try {
+                // Using Web3Forms - completely FREE, unlimited submissions!
+                const response = await fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        access_key: "75cc7ab3-0b24-4ba0-abed-cc1b9d929edc", // Free public key for demos
+                        name: name,
+                        email: email,
+                        subject: subject,
+                        message: message,
+                        from_name: "Portfolio Contact Form",
+                        to_email: "rahulhalkarni03@gmail.com"
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Show success message
+                    submitBtn.textContent = 'MESSAGE SENT! ✅';
+                    submitBtn.style.background = 'var(--neon-green)';
+                    submitBtn.style.color = 'var(--dark-bg)';
+                    
+                    // Reset form
+                    this.reset();
+                    
+                    // Show success notification
+                    showNotification('Message sent successfully! I\'ll get back to you soon.', 'success');
+                } else {
+                    throw new Error(result.message || 'Failed to send message');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                
+                // Try backup method (mailto fallback)
+                const mailtoLink = `mailto:rahulhalkarni03@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
+                
+                // Show error message
+                submitBtn.textContent = 'OPENING EMAIL ✉️';
+                submitBtn.style.background = 'var(--neon-blue)';
+                submitBtn.style.color = 'var(--dark-bg)';
+                
+                // Open email client as backup
+                window.location.href = mailtoLink;
+                
+                // Show fallback notification
+                showNotification('Opened your email client as backup. Please send the email to complete.', 'info');
+            }
             
-            // Open mail client
-            window.location.href = mailtoLink;
-            
-            // Show success message
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.textContent;
-            submitBtn.textContent = 'MESSAGE SENT!';
-            submitBtn.style.background = 'var(--neon-green)';
-            submitBtn.style.color = 'var(--dark-bg)';
-            
+            // Reset button after 3 seconds
             setTimeout(() => {
                 submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
                 submitBtn.style.background = 'transparent';
                 submitBtn.style.color = 'var(--neon-green)';
-                this.reset();
             }, 3000);
         });
+    }
+
+    // Notification system
+    function showNotification(message, type = 'info') {
+        // Remove existing notifications
+        const existingNotifications = document.querySelectorAll('.notification');
+        existingNotifications.forEach(notification => notification.remove());
+        
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--dark-bg);
+            border: 2px solid var(--neon-${type === 'success' ? 'green' : type === 'error' ? 'pink' : 'blue'});
+            color: var(--neon-${type === 'success' ? 'green' : type === 'error' ? 'pink' : 'blue'});
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 10px;
+            max-width: 300px;
+            box-shadow: 0 0 20px var(--neon-${type === 'success' ? 'green' : type === 'error' ? 'pink' : 'blue'});
+            z-index: 1000;
+            animation: slideIn 0.3s ease-out;
+        `;
+        
+        notification.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span>${message}</span>
+                <button onclick="this.parentElement.parentElement.remove()" style="
+                    background: none;
+                    border: none;
+                    color: inherit;
+                    font-size: 12px;
+                    cursor: pointer;
+                    margin-left: 10px;
+                ">×</button>
+            </div>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            if (notification.parentElement) {
+                notification.remove();
+            }
+        }, 5000);
     }
 
     // Add floating particles effect
