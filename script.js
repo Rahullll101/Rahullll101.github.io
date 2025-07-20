@@ -99,6 +99,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Check if user just submitted a form successfully
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('sent') === 'true') {
+        showNotification('Message sent successfully! Thank you for contacting me. I\'ll get back to you soon!', 'success');
+        // Clean up URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
     // Contact form functionality
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
@@ -122,25 +130,54 @@ document.addEventListener('DOMContentLoaded', function() {
             const message = formData.get('message');
             
             try {
-                // Using Web3Forms - completely FREE, unlimited submissions!
-                const response = await fetch('https://api.web3forms.com/submit', {
+                // Method 1: Try Formsubmit.co (completely free, no signup)
+                const formsubmitResponse = await fetch('https://formsubmit.co/rahulhalkarni03@gmail.com', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'
                     },
                     body: JSON.stringify({
-                        access_key: "75cc7ab3-0b24-4ba0-abed-cc1b9d929edc", // Free public key for demos
                         name: name,
                         email: email,
                         subject: subject,
                         message: message,
-                        from_name: "Portfolio Contact Form",
-                        to_email: "rahulhalkarni03@gmail.com"
+                        _next: window.location.href,
+                        _captcha: "false"
+                    })
+                });
+
+                if (formsubmitResponse.ok) {
+                    // Show success message
+                    submitBtn.textContent = 'MESSAGE SENT! ✅';
+                    submitBtn.style.background = 'var(--neon-green)';
+                    submitBtn.style.color = 'var(--dark-bg)';
+                    
+                    // Reset form
+                    this.reset();
+                    
+                    // Show success notification
+                    showNotification('Message sent successfully! I\'ll get back to you soon.', 'success');
+                    return;
+                }
+                
+                // Method 2: Fallback to Web3Forms
+                const web3Response = await fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        access_key: "75cc7ab3-0b24-4ba0-abed-cc1b9d929edc",
+                        name: name,
+                        email: email,
+                        subject: subject,
+                        message: message
                     })
                 });
                 
-                const result = await response.json();
+                const result = await web3Response.json();
                 
                 if (result.success) {
                     // Show success message
