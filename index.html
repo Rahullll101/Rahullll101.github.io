@@ -1,16 +1,97 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Home - My GitHub Pages Site</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rahul's Retro Portfolio - Game Developer</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323:wght@400&display=swap" rel="stylesheet">
 </head>
 <body>
-    <nav>
-        <a href="index.html">Home</a> | 
-        <a href="about.html">About</a> | 
-        <a href="contact.html">Contact</a>
-    </nav>
-    <h1>Hello World</h1>
-    <p>I'm hosted with GitHub Pages.</p>
-    <p>Welcome to my multi-page GitHub Pages site!</p>
+    <div class="loading" id="loading">
+        <div class="loading-text">LOADING...</div>
+    </div>
+
+    <header class="header">
+        <nav class="navbar">
+            <div class="logo">
+                <h1>� RAHUL.DEV</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link active">HOME</a></li>
+                <li><a href="about.html" class="nav-link">ABOUT</a></li>
+                <li><a href="projects.html" class="nav-link">PROJECTS</a></li>
+                <li><a href="skills.html" class="nav-link">SKILLS</a></li>
+                <li><a href="contact.html" class="nav-link">CONTACT</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main">
+        <section class="hero">
+            <div class="container">
+                <div class="pixel-art">🎮👨‍💻🕹️</div>
+                <h1 class="hero-title">RAHUL HALKARNI</h1>
+                <p class="hero-subtitle">Full Stack Developer & Game Enthusiast</p>
+                <p class="hero-description">Building digital experiences with retro vibes and modern tech</p>
+                <div class="hero-buttons">
+                    <a href="projects.html" class="btn btn-primary">VIEW PROJECTS</a>
+                    <a href="contact.html" class="btn btn-secondary">GET IN TOUCH</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">PLAYER STATS</h2>
+                <div class="grid">
+                    <div class="card">
+                        <h3>💻 Code Level</h3>
+                        <p>Full Stack Developer with expertise in modern web technologies. Always ready for the next coding challenge!</p>
+                    </div>
+                    <div class="card">
+                        <h3>🎯 Mission</h3>
+                        <p>Creating innovative solutions that bridge the gap between creativity and functionality in the digital world.</p>
+                    </div>
+                    <div class="card">
+                        <h3>🏆 Achievement</h3>
+                        <p>Successfully building portfolio websites with retro gaming aesthetics that capture attention and deliver results.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">TECH STACK</h2>
+                <div class="grid">
+                    <div class="card">
+                        <h3>🌐 Frontend</h3>
+                        <p>HTML5, CSS3, JavaScript, React, Vue.js</p>
+                    </div>
+                    <div class="card">
+                        <h3>⚙️ Backend</h3>
+                        <p>Node.js, Python, Django, Express.js</p>
+                    </div>
+                    <div class="card">
+                        <h3>🗄️ Database</h3>
+                        <p>MongoDB, PostgreSQL, MySQL</p>
+                    </div>
+                    <div class="card">
+                        <h3>🛠️ Tools</h3>
+                        <p>Git, VS Code, Docker, AWS</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Rahul Halkarni. All rights reserved. | GAME OVER? PRESS START! 🎮</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
