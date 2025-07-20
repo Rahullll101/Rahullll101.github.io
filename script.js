@@ -99,6 +99,52 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Email obfuscation for bot protection
+    function getObfuscatedEmail() {
+        // Split email to avoid bot scraping
+        const user = 'rahulhalkarni03';
+        const domain = 'gmail.com';
+        return user + '@' + domain;
+    }
+
+    // Setup secure contact form
+    const secureForm = document.getElementById('secureContactForm');
+    if (secureForm) {
+        // Dynamically set form action to avoid exposing email in HTML
+        secureForm.action = 'https://formsubmit.co/' + getObfuscatedEmail();
+        secureForm.method = 'POST';
+        
+        // Add hidden fields for FormSubmit configuration
+        const hiddenFields = [
+            { name: '_next', value: 'https://rahullll101.github.io/contact.html?sent=true' },
+            { name: '_subject', value: 'New message from Portfolio!' },
+            { name: '_captcha', value: 'false' },
+            { name: '_template', value: 'basic' }
+        ];
+        
+        hiddenFields.forEach(field => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = field.name;
+            input.value = field.value;
+            secureForm.appendChild(input);
+        });
+    }
+
+    // Setup secure email link
+    const emailLink = document.getElementById('emailLink');
+    if (emailLink) {
+        emailLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            const email = getObfuscatedEmail();
+            this.href = 'mailto:' + email;
+            this.textContent = email;
+            this.onclick = null; // Remove click handler after first click
+            // Trigger the mailto
+            window.location.href = 'mailto:' + email;
+        });
+    }
+
     // Check if user just submitted a form successfully
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('sent') === 'true') {

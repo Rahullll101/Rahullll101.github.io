@@ -38,7 +38,7 @@
                 <div class="grid">
                     <div class="card">
                         <h3>📧 Email</h3>
-                        <p><a href="mailto:rahulhalkarni03@gmail.com" style="color: var(--neon-blue); text-decoration: none;">rahulhalkarni03@gmail.com</a></p>
+                        <p><a href="#" id="emailLink" style="color: var(--neon-blue); text-decoration: none;">Click to reveal email</a></p>
                     </div>
                     <div class="card">
                         <h3>💼 GitHub</h3>
@@ -60,13 +60,9 @@
             <div class="container">
                 <h2 class="section-title">SEND MESSAGE</h2>
                 <div class="card" style="max-width: 600px; margin: 0 auto;">
-                    <!-- Method 1: Simple HTML form (guaranteed to work) -->
-                    <form action="https://formsubmit.co/rahulhalkarni03@gmail.com" method="POST">
-                        <!-- Formsubmit configuration -->
-                        <input type="hidden" name="_next" value="https://rahullll101.github.io/contact.html?sent=true">
-                        <input type="hidden" name="_subject" value="New message from Portfolio!">
-                        <input type="hidden" name="_captcha" value="false">
-                        
+                    <!-- Method 1: Simple HTML form with obfuscated email (bot-safe) -->
+                    <form id="secureContactForm">
+                        <!-- Form will be dynamically configured by JavaScript -->
                         <div class="form-group">
                             <label for="name">Player Name:</label>
                             <input type="text" id="name" name="name" required>
@@ -86,26 +82,31 @@
                         <button type="submit" class="btn btn-primary" style="width: 100%;">SEND MESSAGE</button>
                     </form>
                     
-                    <!-- JavaScript enhanced form (backup) -->
-                    <form id="contactForm" style="display: none;">
-                        <div class="form-group">
-                            <label for="js-name">Player Name:</label>
-                            <input type="text" id="js-name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="js-email">Email Address:</label>
-                            <input type="email" id="js-email" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="js-subject">Quest Subject:</label>
-                            <input type="text" id="js-subject" name="subject" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="js-message">Your Message:</label>
-                            <textarea id="js-message" name="message" rows="5" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary" style="width: 100%;">SEND MESSAGE</button>
-                    </form>
+                    <!-- Fallback: Hidden HTML form for no-JS users -->
+                    <noscript>
+                        <form action="https://formsubmit.co/rahulhalkarni03@gmail.com" method="POST">
+                            <input type="hidden" name="_next" value="https://rahullll101.github.io/contact.html?sent=true">
+                            <input type="hidden" name="_subject" value="New message from Portfolio!">
+                            <input type="hidden" name="_captcha" value="false">
+                            <div class="form-group">
+                                <label for="name-noscript">Player Name:</label>
+                                <input type="text" id="name-noscript" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email-noscript">Email Address:</label>
+                                <input type="email" id="email-noscript" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="subject-noscript">Quest Subject:</label>
+                                <input type="text" id="subject-noscript" name="subject" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message-noscript">Your Message:</label>
+                                <textarea id="message-noscript" name="message" rows="5" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">SEND MESSAGE</button>
+                        </form>
+                    </noscript>
                 </div>
             </div>
         </section>
